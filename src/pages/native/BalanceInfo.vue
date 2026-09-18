@@ -488,10 +488,15 @@ export default {
                             let hash = tagData.rows.find(
                                 row => row.tag_name === 'json.hash',
                             ).content;
-                            let response = await fetch(
-                                `https://api.dStor.cloud/ipfs/${hash}`,
-                            );
-                            const data = await response.json();
+                            let data = {};
+                            // TODO: better error handling for dead links (e.g. dstor.io)
+                            try {
+                                let response = await fetch(
+                                    `https://api.dStor.cloud/ipfs/${hash}`,
+                                );
+                                data = await response.json();
+                            } catch {
+                            }
                             this.nftTokenTags.add({
                                 title: data.ti,
                                 image: data.dt,
